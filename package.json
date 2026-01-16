@@ -1,0 +1,38 @@
+{
+  "name": "n8n-nodes-thrifty",
+  "version": "1.0.0",
+  "description": "Nó oficial da Thrifty AI para n8n",
+  "keywords": [
+    "n8n-community-node-package"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Thrifty AI",
+    "email": "suporte@thrifty.qzz.io"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "nodes": [
+      "dist/nodes/ThriftyChat/ThriftyChat.node.js"
+    ],
+    "credentials": [
+      "dist/credentials/ThriftyApi.credentials.js"
+    ]
+  },
+  "devDependencies": {
+    "n8n-workflow": "*",
+    "typescript": "^5.2.2",
+    "@types/node": "^18.11.9"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
