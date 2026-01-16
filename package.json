@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-thrifty",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Nó oficial da Thrifty AI para n8n",
   "keywords": [
     "n8n-community-node-package"
@@ -21,18 +21,22 @@
   ],
   "n8n": {
     "nodes": [
-      "dist/nodes/ThriftyChat/ThriftyChat.node.js"
+      "dist/nodes/ThriftyChat/ThriftyChat.node.js",
+      "dist/nodes/ThriftyModel/ThriftyModel.node.js"
     ],
     "credentials": [
       "dist/credentials/ThriftyApi.credentials.js"
     ]
   },
   "devDependencies": {
+    "@types/node": "^18.11.9",
     "n8n-workflow": "*",
-    "typescript": "^5.2.2",
-    "@types/node": "^18.11.9"
+    "typescript": "^5.2.2"
   },
   "peerDependencies": {
     "n8n-workflow": "*"
+  },
+  "dependencies": {
+    "@langchain/openai": "^1.2.2"
   }
 }
