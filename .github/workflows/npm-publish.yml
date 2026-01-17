@@ -7,24 +7,25 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Permissão OBRIGATÓRIA para pular o 2FA via OIDC
+
     steps:
       - uses: actions/checkout@v4
 
+      # Configura o Node e prepara o arquivo .npmrc corretamente
       - uses: actions/setup-node@v4
         with:
           node-version: "20.x"
-          # Não definimos registry-url aqui para controlar manualmente abaixo
+          registry-url: "https://registry.npmjs.org"
 
       - run: npm ci
       - run: npm run build
 
-      # Cria o arquivo de configuração de autenticação manualmente
-      # Isso garante que o token seja injetado no formato exato que o NPM espera
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      # O comando chave: --provenance ativa a troca de segurança OIDC
+      # O access public garante que não tente publicar privado (que falharia no plano free)
+      - run: npm publish --provenance --access public
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      # Publica usando o arquivo .npmrc criado acima
-      - run: npm publish --access public
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Usamos o token real para passar da validação inicial do setup-node
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
