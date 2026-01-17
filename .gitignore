@@ -1,17 +1,5 @@
-# Dependências
-node_modules
-npm-debug.log
-
-# Build (o que é gerado não deve ir pro git)
-dist
-
-# Arquivos de sistema
-.DS_Store
-Thumbs.db
-
-# Configurações do editor
-.vscode
-.idea
-
-# Arquivos de ambiente (CRÍTICO: nunca subir chaves)
+node_modules/
+dist/
 .env
+.DS_Store
+npm-debug.log
