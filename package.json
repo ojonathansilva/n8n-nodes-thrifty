@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-thrifty",
-  "version": "1.1.3",
+  "version": "v1.1.4",
   "description": "Nó oficial da Thrifty AI para n8n",
   "keywords": [
     "n8n-community-node-package"

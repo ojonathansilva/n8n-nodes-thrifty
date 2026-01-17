@@ -7,20 +7,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Permite autenticação segura sem senha
+
     steps:
       - uses: actions/checkout@v4
-
-      # Prepara o Node.js e avisa que vamos usar o registro oficial do NPM
       - uses: actions/setup-node@v4
         with:
           node-version: "20.x"
           registry-url: "https://registry.npmjs.org"
 
-      # Instala dependências e compila o TypeScript
       - run: npm ci
       - run: npm run build
 
-      # Publica usando o Token que configuramos nos Segredos do GitHub
-      - run: npm publish
+      # Publica usando a confiança do GitHub (sem pedir 2FA)
+      - run: npm publish --provenance
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # Mantém por compatibilidade, mas o --provenance faz a mágica
