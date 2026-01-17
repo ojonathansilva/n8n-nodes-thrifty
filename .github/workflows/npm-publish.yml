@@ -1,0 +1,26 @@
+name: Publicar no NPM
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Prepara o Node.js e avisa que vamos usar o registro oficial do NPM
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
+
+      # Instala dependências e compila o TypeScript
+      - run: npm ci
+      - run: npm run build
+
+      # Publica usando o Token que configuramos nos Segredos do GitHub
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
