@@ -9,19 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # Permissão para o Trusted Publishing funcionar
+      id-token: write # Permissão OBRIGATÓRIA para o Trusted Publishing
 
     steps:
       - uses: actions/checkout@v4
 
-      # [CORREÇÃO] O registry-url VOLTOU (obrigatório para criar o .npmrc)
       - uses: actions/setup-node@v4
         with:
           node-version: "20.x"
-          registry-url: "https://registry.npmjs.org"
+          # REMOVI o registry-url daqui para ele não criar configuração com senha errada
+
+      # [O PULO DO GATO] Criamos a config manualmente apenas apontando o local, sem pedir senha
+      - run: echo "registry=https://registry.npmjs.org/" > .npmrc
 
       - run: npm ci
       - run: npm run build
 
-      # Publica usando OIDC. Sem 'env', ele usa a identidade do GitHub.
+      # O comando --provenance usa a identidade do GitHub (id-token) para logar
       - run: npm publish --provenance --access public
