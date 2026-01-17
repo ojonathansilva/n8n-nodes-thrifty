@@ -7,23 +7,24 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-
     steps:
       - uses: actions/checkout@v4
 
-      # Configura o Node e conecta o token que salvamos nos segredos
       - uses: actions/setup-node@v4
         with:
           node-version: "20.x"
-          registry-url: "https://registry.npmjs.org"
+          # Não definimos registry-url aqui para controlar manualmente abaixo
 
       - run: npm ci
       - run: npm run build
 
-      # Publica usando o token real
-      - run: npm publish --provenance --access public
+      # Cria o arquivo de configuração de autenticação manualmente
+      # Isso garante que o token seja injetado no formato exato que o NPM espera
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Publica usando o arquivo .npmrc criado acima
+      - run: npm publish --access public
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
