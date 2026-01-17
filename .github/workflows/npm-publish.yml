@@ -9,24 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # Permite que o NPM reconheça o GitHub sem senha
+      id-token: write # Permissão mágica para o Trusted Publishing
 
     steps:
       - uses: actions/checkout@v4
 
-      # Configura o Node E define o registro (crucial para o erro anterior)
       - uses: actions/setup-node@v4
         with:
           node-version: "20.x"
-          registry-url: "https://registry.npmjs.org"
+          # NÃO colocamos registry-url aqui para não gerar arquivo de autenticação falso
 
       - run: npm ci
       - run: npm run build
 
-      # Publica usando OIDC (--provenance)
-      - run: npm publish --provenance
-        env:
-          # O setup-node espera essa variável para configurar o .npmrc,
-          # mas com OIDC e Trusted Publishing, o valor dela é ignorado pelo registro
-          # em favor do token de identidade. Deixamos aqui para o setup-node não reclamar.
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # O comando --provenance usa a identidade do GitHub para logar sem senha
+      - run: npm publish --provenance --access public
