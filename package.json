@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-thrifty",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "description": "Nó oficial da Thrifty AI para n8n",
   "keywords": [
     "n8n-community-node-package"
@@ -38,6 +38,10 @@
   },
   "dependencies": {
     "@langchain/openai": "^1.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ojonathansilva/n8n-nodes-thrifty.git"
   },
   "publishConfig": {
     "access": "public",
